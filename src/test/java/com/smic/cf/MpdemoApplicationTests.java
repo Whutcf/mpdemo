@@ -313,4 +313,11 @@ public class MpdemoApplicationTests {
 		userMapper.deleteById(121212121212121212L);
 	}
 	
+	
+	@Test
+	public void deleteWrapper() {
+		LambdaQueryWrapper<User> lambdaQuery = Wrappers.lambdaQuery();
+		lambdaQuery.eq(User::getRealName, "王二");
+		userMapper.delete(lambdaQuery);
+	}
 }
