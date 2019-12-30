@@ -1,0 +1,9 @@
+logging:
+  level:
+    root: warn
+    com.smic.cf.dao: trace
+  pattern:    console: '%p%m%n' 
+    
+    
+mybatis-plus:  mapper-locations: com/smic/cf/mapper/*Mapper.xml
+  type-aliases-package: com.smic.cf.entity

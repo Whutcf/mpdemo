@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.smic.cf.dao.UserMapper">
+	<resultMap type="User" id="getAllUsers">
+		<result column="user_id" property="userId"/>
+		<result column="name" property="realName"/>
+		<result column="age" property="age"/>
+		<result column="email" property="email"/>
+		<result column="manager_id" property="managerId"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+  <select id="selectAll" resultMap="getAllUsers">
+  	select * from mp_user ${ew.customSqlSegment}
+  </select>
+  
+  <select id="selectUserPage" resultMap="getAllUsers">
+  	select * from mp_user ${ew.customSqlSegment}
+  </select>
+  
+</mapper>
