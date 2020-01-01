@@ -75,17 +75,16 @@ public class MpdemoApplicationTests {
 
 	/**
 	 * 1、名字中包含雨并且年龄小于40 name like '%雨%' and age<40
-	 * 2、名字中包含雨年并且龄大于等于20且小于等于40并且email不为空 name like '%雨%' and age between 20 and 40
-	 * and email is not null 3、名字为王姓或者年龄大于等于25，按照年龄降序排列，年龄相同按照id升序排列 name like '王%'
-	 * or age>=25 order by age desc,id asc 4、创建日期为2019年2月14日并且直属上级为名字为王姓
-	 * date_format(create_time,'%Y-%m-%d')='2019-02-14' and manager_id in (select id
-	 * from user where name like '王%') 5、名字为王姓并且（年龄小于40或邮箱不为空） name like '王%'
-	 * and(age<40 or email is not null) 6、名字为王姓或者（年龄小于40并且年龄大于20并且邮箱不为空） name like
-	 * '王%' or (age<40 and age>20 and email is not null) 7、（年龄小于40或邮箱不为空）并且名字为王姓
-	 * (age<40 or email is not null) and name like '王%' 8、年龄为30、31、34、35 age
-	 * in(30、31、34、35) 9、只返回满足条件的其中一条语句即可 limit 1 10、名字中包含雨并且年龄小于40(需求1加强版)
-	 * 第一种情况：select id,name from user where name like '%雨%' and age<40 第二种情况：select
-	 * id,name,age,email from user where name like '%雨%' and age<40
+	 * 2、名字中包含雨年并且龄大于等于20且小于等于40并且email不为空 name like '%雨%' and age between 20 and 40 and email is not null 
+	 * 3、名字为王姓或者年龄大于等于25，按照年龄降序排列，年龄相同按照id升序排列 name like '王%' or age>=25 order by age desc,id asc 
+	 * 4、创建日期为2019年2月14日并且直属上级为名字为王姓 date_format(create_time,'%Y-%m-%d')='2019-02-14' and manager_id in (select id from user where name like '王%') 
+	 * 5、名字为王姓并且（年龄小于40或邮箱不为空） name like '王%' and(age<40 or email is not null) 
+	 * 6、名字为王姓或者（年龄小于40并且年龄大于20并且邮箱不为空） name like '王%' or (age<40 and age>20 and email is not null) 
+	 * 7、（年龄小于40或邮箱不为空）并且名字为王姓 (age<40 or email is not null) and name like '王%' 
+	 * 8、年龄为30、31、34、35 age in(30、31、34、35) 9、只返回满足条件的其中一条语句即可 limit 1 
+	 * 10、名字中包含雨并且年龄小于40(需求1加强版)
+	 * 第一种情况：select id,name from user where name like '%雨%' and age<40
+	 * 第二种情况：select id,name,age,email from user where name like '%雨%' and age<40
 	 * 
 	 */
 
