@@ -75,16 +75,17 @@ public class MpdemoApplicationTests {
 
 	/**
 	 * 1、名字中包含雨并且年龄小于40 name like '%雨%' and age<40
-	 * 2、名字中包含雨年并且龄大于等于20且小于等于40并且email不为空 name like '%雨%' and age between 20 and 40 and email is not null 
-	 * 3、名字为王姓或者年龄大于等于25，按照年龄降序排列，年龄相同按照id升序排列 name like '王%' or age>=25 order by age desc,id asc 
-	 * 4、创建日期为2019年2月14日并且直属上级为名字为王姓 date_format(create_time,'%Y-%m-%d')='2019-02-14' and manager_id in (select id from user where name like '王%') 
-	 * 5、名字为王姓并且（年龄小于40或邮箱不为空） name like '王%' and(age<40 or email is not null) 
-	 * 6、名字为王姓或者（年龄小于40并且年龄大于20并且邮箱不为空） name like '王%' or (age<40 and age>20 and email is not null) 
-	 * 7、（年龄小于40或邮箱不为空）并且名字为王姓 (age<40 or email is not null) and name like '王%' 
-	 * 8、年龄为30、31、34、35 age in(30、31、34、35) 9、只返回满足条件的其中一条语句即可 limit 1 
-	 * 10、名字中包含雨并且年龄小于40(需求1加强版)
-	 * 第一种情况：select id,name from user where name like '%雨%' and age<40
-	 * 第二种情况：select id,name,age,email from user where name like '%雨%' and age<40
+	 * 2、名字中包含雨年并且龄大于等于20且小于等于40并且email不为空 name like '%雨%' and age between 20 and 40
+	 * and email is not null 3、名字为王姓或者年龄大于等于25，按照年龄降序排列，年龄相同按照id升序排列 name like '王%'
+	 * or age>=25 order by age desc,id asc 4、创建日期为2019年2月14日并且直属上级为名字为王姓
+	 * date_format(create_time,'%Y-%m-%d')='2019-02-14' and manager_id in (select id
+	 * from user where name like '王%') 5、名字为王姓并且（年龄小于40或邮箱不为空） name like '王%'
+	 * and(age<40 or email is not null) 6、名字为王姓或者（年龄小于40并且年龄大于20并且邮箱不为空） name like
+	 * '王%' or (age<40 and age>20 and email is not null) 7、（年龄小于40或邮箱不为空）并且名字为王姓
+	 * (age<40 or email is not null) and name like '王%' 8、年龄为30、31、34、35 age
+	 * in(30、31、34、35) 9、只返回满足条件的其中一条语句即可 limit 1 10、名字中包含雨并且年龄小于40(需求1加强版)
+	 * 第一种情况：select id,name from user where name like '%雨%' and age<40 第二种情况：select
+	 * id,name,age,email from user where name like '%雨%' and age<40
 	 * 
 	 */
 
@@ -103,8 +104,10 @@ public class MpdemoApplicationTests {
 //		queryWrapper.in("age", Arrays.asList(30,31,34,35));
 //		queryWrapper.last("limit 1");
 //		queryWrapper.select("user_id","name","age").like("name","雨").lt("age",40);
-		queryWrapper.select(User.class,
-				info -> !info.getColumn().equals("manager_id") && !info.getColumn().equals("create_time")).like("name","雨").lt("age",40);
+		queryWrapper
+				.select(User.class,
+						info -> !info.getColumn().equals("manager_id") && !info.getColumn().equals("create_time"))
+				.like("name", "雨").lt("age", 40);
 		List<User> users = userMapper.selectList(queryWrapper);
 		users.forEach(System.out::println);
 	}
@@ -151,7 +154,7 @@ public class MpdemoApplicationTests {
 		params.put("age", 31);
 		params.put("email", null);
 //		queryWrapper.allEq(params,false);//自动过滤null的字段
-		queryWrapper.allEq((k, v) -> k.equals("name"), params);//只查询k选中的内容
+		queryWrapper.allEq((k, v) -> k.equals("name"), params);// 只查询k选中的内容
 		List<User> users = userMapper.selectList(queryWrapper);
 		users.forEach(System.out::println);
 
@@ -222,7 +225,7 @@ public class MpdemoApplicationTests {
 		lambdaQuery.likeRight(User::getRealName, "王").and(lq -> lq.lt(User::getAge, 40).or().isNotNull(User::getEmail));
 
 //		Page<User> page = new Page<>(1, 2);
-		Page<User> page = new Page<>(1, 2, false);
+		Page<User> page = new Page<>(1, 2, false);// false表示不查询记录数
 
 //		IPage<User> iPage = userMapper.selectPage(page, lambdaQuery);		
 //		System.out.println("总条数："+iPage.getTotal());
@@ -240,7 +243,7 @@ public class MpdemoApplicationTests {
 		lambdaQuery.likeRight(User::getRealName, "王").and(lq -> lq.lt(User::getAge, 40).or().isNotNull(User::getEmail));
 
 		Page<User> page = new Page<>(1, 2);
-		IPage<User> iPage = userMapper.selectUserPage(page, lambdaQuery);
+		IPage<User> iPage = userMapper.selectUserPage(page, lambdaQuery);// 自定义sql练习
 		System.out.println("总条数：" + iPage.getTotal());
 		System.out.println("总页数：" + iPage.getPages());
 		iPage.getRecords().forEach(System.out::println);
@@ -283,17 +286,18 @@ public class MpdemoApplicationTests {
 		user.setCreateTime(LocalDateTime.now());
 		userMapper.update(user, updateWrapper);
 	}
-	
+
 	@Test
 	public void updateByWrapper2() {
 		UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-		updateWrapper.eq("name", "张真").eq("user_id", 1211248037419073538L).set("age", 20).set("create_time", LocalDateTime.now());
+		updateWrapper.eq("name", "张真").eq("user_id", 1211248037419073538L).set("age", 20).set("create_time",
+				LocalDateTime.now());
 		userMapper.update(null, updateWrapper);
 	}
-	
+
 	@Test
 	public void updateWrapperLambda() {
-	
+
 		LambdaUpdateWrapper<User> lambdaUpdate = Wrappers.lambdaUpdate();
 		lambdaUpdate.eq(User::getRealName, "张真").set(User::getAge, 30);
 		userMapper.update(null, lambdaUpdate);
@@ -301,22 +305,35 @@ public class MpdemoApplicationTests {
 
 	@Test
 	public void updateWrapperLambdaChain() {
-		
-		boolean update = new LambdaUpdateChainWrapper<User>(userMapper).eq(User::getRealName, "张真").set(User::getAge, 28).update();
+
+		boolean update = new LambdaUpdateChainWrapper<User>(userMapper).eq(User::getRealName, "张真")
+				.set(User::getAge, 28).update();
 		System.out.println(update);
 	}
-	
-	/************************  delete *************************************************************/
+
+	/************************
+	 * delete
+	 *************************************************************/
 	@Test
 	public void deleteById() {
 		userMapper.deleteById(121212121212121212L);
 	}
-	
-	
+
 	@Test
 	public void deleteWrapper() {
 		LambdaQueryWrapper<User> lambdaQuery = Wrappers.lambdaQuery();
 		lambdaQuery.eq(User::getRealName, "王二");
 		userMapper.delete(lambdaQuery);
+	}
+
+	@Test
+	public void testPrimaryKey() {
+		User user = new User();
+		user.setRealName("西瓜味的棉花");
+		user.setAge(24);
+		user.setCreateTime(LocalDateTime.now());
+		user.setEmail("Yilei_ma@smic.com");
+		userMapper.insert(user);
+		System.out.println("生成的主键：" + user.getUserId());
 	}
 }

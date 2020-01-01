@@ -2,18 +2,17 @@ package com.smic.cf.entity;
 
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;
 
 @Data
-@TableName("mp_user")
 public class User {
 
 	//主键
-	@TableId
+	@TableId(type=IdType.AUTO)
 	private Long userId;
 	
 	//姓名

@@ -7,3 +7,5 @@ logging:
     
 mybatis-plus:  mapper-locations: com/smic/cf/mapper/*Mapper.xml
   type-aliases-package: com.smic.cf.entity
+  global-config:    db-config:      id-type: AUTO
+      table-prefix: mp_
