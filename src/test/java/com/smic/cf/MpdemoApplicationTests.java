@@ -104,7 +104,7 @@ public class MpdemoApplicationTests {
 //		queryWrapper.last("limit 1");
 //		queryWrapper.select("user_id","name","age").like("name","雨").lt("age",40);
 		queryWrapper.select(User.class,
-				info -> !info.getColumn().equals("manager_id") && !info.getColumn().equals("create_time"));
+				info -> !info.getColumn().equals("manager_id") && !info.getColumn().equals("create_time")).like("name","雨").lt("age",40);
 		List<User> users = userMapper.selectList(queryWrapper);
 		users.forEach(System.out::println);
 	}
@@ -150,8 +150,8 @@ public class MpdemoApplicationTests {
 		params.put("name", "李四");
 		params.put("age", 31);
 		params.put("email", null);
-//		queryWrapper.allEq(params,false);
-		queryWrapper.allEq((k, v) -> !k.equals("name"), params);
+//		queryWrapper.allEq(params,false);//自动过滤null的字段
+		queryWrapper.allEq((k, v) -> k.equals("name"), params);//只查询k选中的内容
 		List<User> users = userMapper.selectList(queryWrapper);
 		users.forEach(System.out::println);
 
