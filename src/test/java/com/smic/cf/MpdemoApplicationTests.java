@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.additional.query.impl.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
 import com.smic.cf.dao.UserMapper;
-import com.smic.cf.entity.User;
+import com.smic.cf.entity.MpUser;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,42 +34,42 @@ public class MpdemoApplicationTests {
 
 	@Test
 	public void select() {
-		List<User> users = userMapper.selectList(null);
-		for (User user : users) {
-			System.out.println(user.toString());
+		List<MpUser> mpUsers = userMapper.selectList(null);
+		for (MpUser mpUser : mpUsers) {
+			System.out.println(mpUser.toString());
 		}
 	}
 
 	@Test
 	public void insert() {
-		User user = new User();
-		user.setRealName("小米");
-		user.setAge(30);
-		user.setEmail("xiaomi@smic.com");
-		user.setManagerId(1088248166370832385L);
-		user.setCreateTime(LocalDateTime.now());
-		user.setRemark("我是一个备注，不仅进入数据库");
-		int rows = userMapper.insert(user);
+		MpUser mpUser = new MpUser();
+		mpUser.setRealName("小米");
+		mpUser.setAge(30);
+		mpUser.setEmail("xiaomi@smic.com");
+		mpUser.setManagerId(1088248166370832385L);
+		mpUser.setCreateTime(LocalDateTime.now());
+		mpUser.setRemark("我是一个备注，不仅进入数据库");
+		int rows = userMapper.insert(mpUser);
 		System.out.println(rows);
 	}
 
 	@Test
 	public void selects() {
-		User user = userMapper.selectById(1087982257332887553L);
-		System.out.println(user.toString());
+		MpUser mpUser = userMapper.selectById(1087982257332887553L);
+		System.out.println(mpUser.toString());
 
 		System.out.println("-------------------------------------------");
 
 		List<Long> ids = Arrays.asList(1088248166370832385L, 1211245290259050498L, 1211248550713847809L);
-		List<User> users = userMapper.selectBatchIds(ids);
-		users.forEach(System.out::print);
+		List<MpUser> mpUsers = userMapper.selectBatchIds(ids);
+		mpUsers.forEach(System.out::print);
 
 		System.out.println("-------------------------------------------");
 
 		Map<String, Object> columnMap = new HashMap<>();
 		columnMap.put("name", "王天风");
 		columnMap.put("age", 25);
-		List<User> listmp = userMapper.selectByMap(columnMap);
+		List<MpUser> listmp = userMapper.selectByMap(columnMap);
 		listmp.forEach(System.out::print);
 	}
 
@@ -91,7 +91,7 @@ public class MpdemoApplicationTests {
 
 	@Test
 	public void selectByWrapper() {
-		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		QueryWrapper<MpUser> queryWrapper = new QueryWrapper<>();
 //		QueryWrapper<User> queryWrapper2 = Wrappers.query();
 //		queryWrapper.like("name", "雨").lt("age", 40);	
 //		queryWrapper.like("name", "雨").between("age", 20, 40).isNotNull("email");
@@ -105,11 +105,11 @@ public class MpdemoApplicationTests {
 //		queryWrapper.last("limit 1");
 //		queryWrapper.select("user_id","name","age").like("name","雨").lt("age",40);
 		queryWrapper
-				.select(User.class,
+				.select(MpUser.class,
 						info -> !info.getColumn().equals("manager_id") && !info.getColumn().equals("create_time"))
 				.like("name", "雨").lt("age", 40);
-		List<User> users = userMapper.selectList(queryWrapper);
-		users.forEach(System.out::println);
+		List<MpUser> mpUsers = userMapper.selectList(queryWrapper);
+		mpUsers.forEach(System.out::println);
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class MpdemoApplicationTests {
 	}
 
 	private void condition(String name, String email) {
-		QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+		QueryWrapper<MpUser> queryWrapper = new QueryWrapper<MpUser>();
 //		if(!StringUtils.isEmpty(name)) {
 //			queryWrapper.like("name", name);
 //		}
@@ -132,31 +132,31 @@ public class MpdemoApplicationTests {
 		queryWrapper.like(StringUtils.isNotEmpty(name), "name", name).like(StringUtils.isNotEmpty(email), "email",
 				email);
 
-		List<User> users = userMapper.selectList(queryWrapper);
-		users.forEach(System.out::println);
+		List<MpUser> mpUsers = userMapper.selectList(queryWrapper);
+		mpUsers.forEach(System.out::println);
 	}
 
 	@Test
 	public void selectByWrapperEntity() {
-		User whereUser = new User();
+		MpUser whereUser = new MpUser();
 		whereUser.setRealName("张三");
 		whereUser.setAge(20);
-		QueryWrapper<User> queryWrapper = new QueryWrapper<User>(whereUser);
-		List<User> users = userMapper.selectList(queryWrapper);
-		users.forEach(System.out::println);
+		QueryWrapper<MpUser> queryWrapper = new QueryWrapper<MpUser>(whereUser);
+		List<MpUser> mpUsers = userMapper.selectList(queryWrapper);
+		mpUsers.forEach(System.out::println);
 	}
 
 	@Test
 	public void selectByWrapperAllEq() {
-		QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+		QueryWrapper<MpUser> queryWrapper = new QueryWrapper<MpUser>();
 		Map<String, Object> params = new HashMap<>();
 		params.put("name", "李四");
 		params.put("age", 31);
 		params.put("email", null);
 //		queryWrapper.allEq(params,false);//自动过滤null的字段
 		queryWrapper.allEq((k, v) -> k.equals("name"), params);// 只查询k选中的内容
-		List<User> users = userMapper.selectList(queryWrapper);
-		users.forEach(System.out::println);
+		List<MpUser> mpUsers = userMapper.selectList(queryWrapper);
+		mpUsers.forEach(System.out::println);
 
 	}
 
@@ -168,7 +168,7 @@ public class MpdemoApplicationTests {
 	 */
 	@Test
 	public void selectByWrapperMaps() {
-		QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+		QueryWrapper<MpUser> queryWrapper = new QueryWrapper<MpUser>();
 //		queryWrapper.select("user_id","name").like("name", "王").lt("age", 40);
 
 		queryWrapper.select("avg(age) avg_age", "min(age) min_age", "max(age) max_age").groupBy("manager_id")
@@ -180,10 +180,10 @@ public class MpdemoApplicationTests {
 
 	@Test
 	public void selectLambda() {
-		LambdaQueryWrapper<User> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
-		lambdaQuery.lt(User::getAge, "25").likeRight(User::getRealName, "王");
-		List<User> users = userMapper.selectList(lambdaQuery);
-		users.forEach(System.out::println);
+		LambdaQueryWrapper<MpUser> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
+		lambdaQuery.lt(MpUser::getAge, "25").likeRight(MpUser::getRealName, "王");
+		List<MpUser> mpUsers = userMapper.selectList(lambdaQuery);
+		mpUsers.forEach(System.out::println);
 
 	}
 
@@ -192,17 +192,17 @@ public class MpdemoApplicationTests {
 	 */
 	@Test
 	public void selectLambda2() {
-		LambdaQueryWrapper<User> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
-		lambdaQuery.likeRight(User::getRealName, "王").and(lq -> lq.lt(User::getAge, 40).or().isNotNull(User::getEmail));
-		List<User> users = userMapper.selectList(lambdaQuery);
-		users.forEach(System.out::println);
+		LambdaQueryWrapper<MpUser> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
+		lambdaQuery.likeRight(MpUser::getRealName, "王").and(lq -> lq.lt(MpUser::getAge, 40).or().isNotNull(MpUser::getEmail));
+		List<MpUser> mpUsers = userMapper.selectList(lambdaQuery);
+		mpUsers.forEach(System.out::println);
 	}
 
 	@Test
 	public void selectLambda3() {
-		List<User> users = new LambdaQueryChainWrapper<User>(userMapper).like(User::getRealName, "雨")
-				.ge(User::getAge, 16).list();
-		users.forEach(System.out::println);
+		List<MpUser> mpUsers = new LambdaQueryChainWrapper<MpUser>(userMapper).like(MpUser::getRealName, "雨")
+				.ge(MpUser::getAge, 16).list();
+		mpUsers.forEach(System.out::println);
 	}
 
 	/**
@@ -210,10 +210,10 @@ public class MpdemoApplicationTests {
 	 */
 	@Test
 	public void selectAllTest() {
-		LambdaQueryWrapper<User> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
-		lambdaQuery.likeRight(User::getRealName, "王").and(lq -> lq.lt(User::getAge, 40).or().isNotNull(User::getEmail));
-		List<User> users = userMapper.selectAll(lambdaQuery);
-		users.forEach(System.out::println);
+		LambdaQueryWrapper<MpUser> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
+		lambdaQuery.likeRight(MpUser::getRealName, "王").and(lq -> lq.lt(MpUser::getAge, 40).or().isNotNull(MpUser::getEmail));
+		List<MpUser> mpUsers = userMapper.selectAll(lambdaQuery);
+		mpUsers.forEach(System.out::println);
 	}
 
 	/**
@@ -221,11 +221,11 @@ public class MpdemoApplicationTests {
 	 */
 	@Test
 	public void selectPage() {
-		LambdaQueryWrapper<User> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
-		lambdaQuery.likeRight(User::getRealName, "王").and(lq -> lq.lt(User::getAge, 40).or().isNotNull(User::getEmail));
+		LambdaQueryWrapper<MpUser> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
+		lambdaQuery.likeRight(MpUser::getRealName, "王").and(lq -> lq.lt(MpUser::getAge, 40).or().isNotNull(MpUser::getEmail));
 
 //		Page<User> page = new Page<>(1, 2);
-		Page<User> page = new Page<>(1, 2, false);// false表示不查询记录数
+		Page<MpUser> page = new Page<>(1, 2, false);// false表示不查询记录数
 
 //		IPage<User> iPage = userMapper.selectPage(page, lambdaQuery);		
 //		System.out.println("总条数："+iPage.getTotal());
@@ -239,11 +239,11 @@ public class MpdemoApplicationTests {
 
 	@Test
 	public void selectUserPageTest() {
-		LambdaQueryWrapper<User> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
-		lambdaQuery.likeRight(User::getRealName, "王").and(lq -> lq.lt(User::getAge, 40).or().isNotNull(User::getEmail));
+		LambdaQueryWrapper<MpUser> lambdaQuery = Wrappers.lambdaQuery();// 一定要加泛型
+		lambdaQuery.likeRight(MpUser::getRealName, "王").and(lq -> lq.lt(MpUser::getAge, 40).or().isNotNull(MpUser::getEmail));
 
-		Page<User> page = new Page<>(1, 2);
-		IPage<User> iPage = userMapper.selectUserPage(page, lambdaQuery);// 自定义sql练习
+		Page<MpUser> page = new Page<>(1, 2);
+		IPage<MpUser> iPage = userMapper.selectUserPage(page, lambdaQuery);// 自定义sql练习
 		System.out.println("总条数：" + iPage.getTotal());
 		System.out.println("总页数：" + iPage.getPages());
 		iPage.getRecords().forEach(System.out::println);
@@ -252,44 +252,44 @@ public class MpdemoApplicationTests {
 	/*******************************************************************************************************************************************************************************/
 	@Test
 	public void updateById() {
-		User user = new User();
-		user.setUserId(1211245290259050498L);
-		user.setAge(21);
-		user.setEmail("lisi@smic.com");
-		user.setCreateTime(LocalDateTime.now());
-		userMapper.updateById(user);
+		MpUser mpUser = new MpUser();
+		mpUser.setUserId(1211245290259050498L);
+		mpUser.setAge(21);
+		mpUser.setEmail("lisi@smic.com");
+		mpUser.setCreateTime(LocalDateTime.now());
+		userMapper.updateById(mpUser);
 	}
 
 	@Test
 	public void updateByWrapper() {
-		UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+		UpdateWrapper<MpUser> updateWrapper = new UpdateWrapper<>();
 		updateWrapper.eq("name", "张三").eq("user_id", 1211248037419073538L);
-		User user = new User();
-		user.setAge(24);
-		user.setEmail("zhangzheng@smic.com");
-		user.setRealName("张真");
-		user.setCreateTime(LocalDateTime.now());
-		userMapper.update(user, updateWrapper);
+		MpUser mpUser = new MpUser();
+		mpUser.setAge(24);
+		mpUser.setEmail("zhangzheng@smic.com");
+		mpUser.setRealName("张真");
+		mpUser.setCreateTime(LocalDateTime.now());
+		userMapper.update(mpUser, updateWrapper);
 	}
 
 	@Test
 	public void updateByWrapper1() {
-		User whereUser = new User();
+		MpUser whereUser = new MpUser();
 		whereUser.setRealName("张真");
 		whereUser.setUserId(1211248037419073538L);
-		UpdateWrapper<User> updateWrapper = new UpdateWrapper<>(whereUser);
+		UpdateWrapper<MpUser> updateWrapper = new UpdateWrapper<>(whereUser);
 //		updateWrapper.eq("name", "张三").eq("user_id", 1211248037419073538L);
-		User user = new User();
-		user.setAge(24);
-		user.setEmail("zhangzheng@smic.com");
-		user.setRealName("张真");
-		user.setCreateTime(LocalDateTime.now());
-		userMapper.update(user, updateWrapper);
+		MpUser mpUser = new MpUser();
+		mpUser.setAge(24);
+		mpUser.setEmail("zhangzheng@smic.com");
+		mpUser.setRealName("张真");
+		mpUser.setCreateTime(LocalDateTime.now());
+		userMapper.update(mpUser, updateWrapper);
 	}
 
 	@Test
 	public void updateByWrapper2() {
-		UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+		UpdateWrapper<MpUser> updateWrapper = new UpdateWrapper<>();
 		updateWrapper.eq("name", "张真").eq("user_id", 1211248037419073538L).set("age", 20).set("create_time",
 				LocalDateTime.now());
 		userMapper.update(null, updateWrapper);
@@ -298,16 +298,16 @@ public class MpdemoApplicationTests {
 	@Test
 	public void updateWrapperLambda() {
 
-		LambdaUpdateWrapper<User> lambdaUpdate = Wrappers.lambdaUpdate();
-		lambdaUpdate.eq(User::getRealName, "张真").set(User::getAge, 30);
+		LambdaUpdateWrapper<MpUser> lambdaUpdate = Wrappers.lambdaUpdate();
+		lambdaUpdate.eq(MpUser::getRealName, "张真").set(MpUser::getAge, 30);
 		userMapper.update(null, lambdaUpdate);
 	}
 
 	@Test
 	public void updateWrapperLambdaChain() {
 
-		boolean update = new LambdaUpdateChainWrapper<User>(userMapper).eq(User::getRealName, "张真")
-				.set(User::getAge, 28).update();
+		boolean update = new LambdaUpdateChainWrapper<MpUser>(userMapper).eq(MpUser::getRealName, "张真")
+				.set(MpUser::getAge, 28).update();
 		System.out.println(update);
 	}
 
@@ -321,19 +321,19 @@ public class MpdemoApplicationTests {
 
 	@Test
 	public void deleteWrapper() {
-		LambdaQueryWrapper<User> lambdaQuery = Wrappers.lambdaQuery();
-		lambdaQuery.eq(User::getRealName, "王二");
+		LambdaQueryWrapper<MpUser> lambdaQuery = Wrappers.lambdaQuery();
+		lambdaQuery.eq(MpUser::getRealName, "王二");
 		userMapper.delete(lambdaQuery);
 	}
 
 	@Test
 	public void testPrimaryKey() {
-		User user = new User();
-		user.setRealName("西瓜味的棉花");
-		user.setAge(24);
-		user.setCreateTime(LocalDateTime.now());
-		user.setEmail("Yilei_ma@smic.com");
-		userMapper.insert(user);
-		System.out.println("生成的主键：" + user.getUserId());
+		MpUser mpUser = new MpUser();
+		mpUser.setRealName("西瓜味的棉花");
+		mpUser.setAge(24);
+		mpUser.setCreateTime(LocalDateTime.now());
+		mpUser.setEmail("Yilei_ma@smic.com");
+		userMapper.insert(mpUser);
+		System.out.println("生成的主键：" + mpUser.getUserId());
 	}
 }

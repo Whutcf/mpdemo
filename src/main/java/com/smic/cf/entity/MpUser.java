@@ -5,11 +5,13 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;
 
 @Data
-public class User {
+@TableName("mp_user")
+public class MpUser {
 
 	//主键
 	@TableId(type=IdType.AUTO)

@@ -9,17 +9,17 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.smic.cf.entity.User;
+import com.smic.cf.entity.MpUser;
 
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
+public interface UserMapper extends BaseMapper<MpUser> {
 	
 	/*
 	 * 自定义SQL练习
 	 */
 //	@Select("select * from mp_user ${ew.customSqlSegment}")
-	List<User> selectAll(@Param(Constants.WRAPPER) Wrapper<User> wrapper);
+	List<MpUser> selectAll(@Param(Constants.WRAPPER) Wrapper<MpUser> wrapper);
 	
-	IPage<User> selectUserPage(Page<User> page,@Param(Constants.WRAPPER) Wrapper<User> wrapper);
+	IPage<MpUser> selectUserPage(Page<MpUser> page,@Param(Constants.WRAPPER) Wrapper<MpUser> wrapper);
 
 }
